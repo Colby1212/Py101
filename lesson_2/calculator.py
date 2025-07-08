@@ -1,6 +1,14 @@
+import json
 
-def prompt(message):
-    print(f' ==> {message}')
+LANGUAGE = 'en'
+with open('calculator_messages.json', 'r') as file:
+    MESSAGES = json.load(file)
+
+def messages(message):
+    return MESSAGES[LANGUAGE][message]
+
+def prompt(messages):
+    print(f'==> {messages}')
 
 def invalid_number(number_str):
     try:
@@ -9,31 +17,41 @@ def invalid_number(number_str):
         return True  
     return False
 
-prompt('Welcome to Calculator!')
+def another_calculation():
+    prompt(messages("another_calculation_prompt"))
+    answer = input().lower()
+    while answer not in ['y', 'n']:
+        prompt(messages("invalid_another_calculation"))
+        answer = input().lower()
+    if answer == 'y':
+        return True
+    elif answer == 'n':
+        return False
+
+prompt(messages("welcome"))
 
 while True:
 
-    prompt("What's the first number?")
+    prompt(messages("first_number_prompt"))
     number1 = input()
 
     while invalid_number(number1):
-        prompt("Hmmm... that doesn't look like a valid number.")
+        prompt(messages("invalid_number"))
         number1 = input()
 
 
-    prompt("What's the second number?")
+    prompt(messages("second_number_prompt"))
     number2 = input()
 
     while invalid_number(number2):
-        prompt("Hmmm... that doesn't look like a valid number.")
+        prompt(messages("invalid_number"))
         number2 = input()
 
-    prompt("What operation would you like to perform\
-    \n1) Add 2) Subtract 3) Multiply 4) Divide")
+    prompt(messages("operation_prompt"))
     operation = input()
 
     while operation not in ['1', '2', '3', '4']:
-        prompt("You must choose a valid operation: 1, 2, 3, or 4.")
+        prompt(messages("invalid_operation"))
         operation = input()
 
     match operation:
@@ -46,4 +64,10 @@ while True:
         case '4':
             output = int(number1)/int(number2)
 
-    prompt(f'The result is: {output}')
+    print("==>",messages("result") + str(output))
+
+    if another_calculation():
+        continue
+    else:
+        prompt(messages("thank you"))
+        break
