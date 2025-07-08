@@ -7,14 +7,14 @@ with open('calculator_messages.json', 'r') as file:
 def messages(message):
     return MESSAGES[LANGUAGE][message]
 
-def prompt(messages):
-    print(f'==> {messages}')
+def prompt(message):
+    print(f'==> {message}')
 
 def invalid_number(number_str):
     try:
         float(number_str)
     except ValueError:
-        return True  
+        return True
     return False
 
 def another_calculation():
@@ -23,10 +23,7 @@ def another_calculation():
     while answer not in ['y', 'n']:
         prompt(messages("invalid_another_calculation"))
         answer = input().lower()
-    if answer == 'y':
-        return True
-    elif answer == 'n':
-        return False
+    return answer =='n'
 
 prompt(messages("welcome"))
 
@@ -67,7 +64,5 @@ while True:
     print("==>",messages("result") + str(output))
 
     if another_calculation():
-        continue
-    else:
         prompt(messages("thank you"))
         break
