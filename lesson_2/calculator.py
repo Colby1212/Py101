@@ -47,4 +47,3 @@ while True:
             output = int(number1)/int(number2)
 
     prompt(f'The result is: {output}')
-
